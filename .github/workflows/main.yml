@@ -1,0 +1,47 @@
+name: Build & deploy
+# Controls when the action will run. 
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: 3.8
+      
+      - name: ensure directories exist
+        run: mkdir -p data/meta data/ogimg data/thumb public/img/thumb
+      
+      - name: Download Data
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow:  main.yml
+          name: data
+          path: data
+      
+      - name: do it
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python do.py pub
+          
+      - name: Upload Data
+        uses: actions/upload-artifact@v2.2.1
+        with:
+          name: data
+          path: data
+
+      - name: Publish
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=public --prod
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
