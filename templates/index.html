@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Svatopluk Karásek{% endblock %}
+{% block customhead %}
+<style>
+.quote {
+    font-style: italic;
+}
+.quote p {
+    margin: 0;
+}
+.artlink {
+    text-decoration: none;
+    color: black;
+}
+.artlink h3 {
+    margin-top: 0;
+    text-decoration: underline;
+    margin-bottom: 0.5rem;
+}
+.alpic {
+    padding-right: 1rem;
+    text-align: center;
+    min-width: 100px;
+}
+.thumb {
+
+}
+.article {
+    display: inline-flex;
+    padding-bottom: 1.5rem;
+}
+.author {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}
+{% block content %}
+<h1>Svatopluk Karásek</h1>
+    <p>18.10.1942 - 20.12.2020</p>
+    <p>Výběr z článků a vzpomínek.</p>
+    {% for a in articles %}
+<div class="article">
+    <a class="artlink alpic" href="{{ a.url }}" target="_blank">
+        <img class="thumb" src="img/thumb/{{ a.filename }}.png">
+    </a>
+    <a class="artlink altext" href="{{ a.url }}" target="_blank">
+        <h3>{{ a.title }}</h3>
+        <p class="author">{{ a.author }}</p>
+        <div class="quote">{{ a.body }}</div>
+    </a>
+</div>
+{#<pre>#}
+{#{{ a }}#}
+{#</pre>#}
+{% endfor %}
+
+{% endblock %}
