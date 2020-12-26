@@ -31,7 +31,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          python do.py pub
+          python do.py publish
           
       - name: Upload Data
         uses: actions/upload-artifact@v2.2.1
